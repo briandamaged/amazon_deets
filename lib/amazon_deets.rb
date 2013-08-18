@@ -19,6 +19,10 @@ module AmazonDeets
       agent.page.search("//span[@id='btAsinTitle']").text
     end
 
+    def url
+      agent.page.uri.to_s
+    end
+
 
     def list_price
       nodes = agent.page.search("//span[@id='listPriceValue']")
@@ -51,6 +55,7 @@ module AmazonDeets
     def details_hash
       return {
         title:         title,
+        url:           url,
         list_price:    list_price,
         current_price: current_price,
         rating:        rating,

@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'amazon_deets'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2013-08-18'
   s.summary     = "Scrapes product details from an Amazon product page"
   s.description = "Scrapes product details from an Amazon product page"
