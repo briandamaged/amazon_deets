@@ -4,6 +4,8 @@ require 'mechanize'
 module AmazonDeets
 
   class Grabber
+    LOG = Logbert[self]
+
     RatingRegex  = /(.+)\s+out\sof/
     ReviewsRegex = /(\d+)/
 
@@ -23,6 +25,7 @@ module AmazonDeets
       if nodes.any?
         return nodes.text
       else
+        LOG.debug "List price was not found.  Returning current price instead."
         return current_price
       end
     end
