@@ -21,11 +21,6 @@ module AmazonDeets
         return result.text.strip
       end
 
-      result = agent.page.search("span#btAsinTitle").first
-      if result
-        return result.text.strip
-      end
-
       return nil
     end
 

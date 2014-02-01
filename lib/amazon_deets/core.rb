@@ -65,5 +65,24 @@ module AmazonDeets
   end
 
 
+  # A MechanizedContext is similar to a scraper, but it
+  # assumes that the @agent has already navigated to
+  # the URL that is going to be scraped.
+  class MechanizedContext
+
+    attr_accessor :agent
+
+    def initialize(agent: Mechanized.new)
+      @agent = agent
+    end
+
+
+    def scrape
+      raise NotImplementedError
+    end
+
+  end
+
+
 end
 
