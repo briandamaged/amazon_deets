@@ -34,8 +34,6 @@ module AmazonDeets
           return f.scrape(agent)
         end
       end
-
-      return nil
     end
 
   end
@@ -82,7 +80,6 @@ module AmazonDeets
     end
 
   end
-
 
 end
 
