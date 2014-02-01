@@ -38,10 +38,7 @@ module AmazonDeets
 
       if lp_element
         return lp_element.text.gsub(/[^.\d]/, "")
-      else
-        return nil
       end
-      
     end
 
     def current_price
