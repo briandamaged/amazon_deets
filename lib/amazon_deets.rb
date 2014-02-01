@@ -16,7 +16,7 @@ module AmazonDeets
     end
 
     def title
-      agent.page.search("//span[@id='btAsinTitle']").text
+      agent.page.search("//h1[@id='title']").text.strip
     end
 
     def url
@@ -25,17 +25,27 @@ module AmazonDeets
 
 
     def list_price
-      nodes = agent.page.search("//span[@id='listPriceValue']")
-      if nodes.any?
-        return nodes.text
-      else
-        LOG.debug "List price was not found.  Returning current price instead."
-        return current_price
+      lp_element = agent.page.search("//span[@id='priceblock_ourprice']").first
+      if lp_element.nil?
+        lp_element = agent.page.search("//td[text()='Price:']/following-sibling::td")
       end
+
+      if lp_element
+        return lp_element.text.gsub(/[^.\d]/, "")
+      else
+        return nil
+      end
+      
     end
 
     def current_price
-      agent.page.search("//span[@id='actualPriceValue']").text
+      current_price_element = agent.page.search("//span[@id='priceblock_saleprice']").first
+      if current_price_element
+        return current_price_element.text
+      else
+        LOG.debug "Looks like no sale is going on.  Returning list price"
+        return list_price
+      end
     end
 
 
