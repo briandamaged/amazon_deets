@@ -16,8 +16,19 @@ module AmazonDeets
     end
 
     def title
-      agent.page.search("//h1[@id='title']").text.strip
+      result = agent.page.search("//h1[@id='title']").first
+      if result
+        return result.text.strip
+      end
+
+      result = agent.page.search("span#btAsinTitle").first
+      if result
+        return result.text.strip
+      end
+
+      return nil
     end
+
 
     def url
       agent.page.uri.to_s
@@ -49,15 +60,26 @@ module AmazonDeets
     end
 
 
+    def rating_text
+      result = agent.page.search("//div[@id='averageCustomerReviews']//span[@title]").first
+      if result
+        return result[:title]
+      end
+
+      result = agent.page.search("div.acrRating").first
+      if result
+        return result.text
+      end
+
+      return nil
+    end
+
     def rating
-      rating_elements = agent.page.search("//div[@id='averageCustomerReviews']//span[@title]")
-      if rating_elements
-        text = rating_elements.first[:title]
-        if text
-          m = RatingRegex.match(text)
-          if m and m[1]
-            return m[1].to_f
-          end
+      text = rating_text
+      if text
+        m = RatingRegex.match(text)
+        if m and m[1]
+          return m[1].to_f
         end
       end
 
