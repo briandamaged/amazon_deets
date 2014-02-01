@@ -19,6 +19,9 @@ module AmazonDeets
 
 
     class Context < MechanizedContext
+      LOG = Logbert[self]
+
+      RatingRegex  = /(.+)\s+out\sof/
 
       def title
         result = agent.page.search("span#btAsinTitle").first
@@ -46,9 +49,26 @@ module AmazonDeets
       end
 
       def rating
+        result = agent.page.search("span.crAvgStars span[title$='5 stars']").first
+        if result
+          m = RatingRegex.match result[:title]
+          LOG.info result[:title]
+          if m and m[1]
+            return m[1]
+          end
+        else
+          LOG.warning "Unable to locate rating element"
+        end
       end
 
       def reviews
+        reviews_element = agent.page.search("//span[@class='crAvgStars']/a[contains(text(), 'reviews')]")
+        if reviews_element
+          text = reviews_element.text.gsub(/[^\d]/, "")
+          return text.to_i unless text.empty?
+        else
+          LOG.warning "Reviews element could not be found"
+        end
       end
 
       def scrape
