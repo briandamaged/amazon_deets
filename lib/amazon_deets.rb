@@ -40,15 +40,28 @@ module AmazonDeets
 
 
     def rating
-      text = agent.page.search("//div[@id='acr']//span[@title]").text
-      m = RatingRegex.match(text)
-      m[1].to_f
+      rating_elements = agent.page.search("//div[@id='averageCustomerReviews']//span[@title]")
+      if rating_elements
+        text = rating_elements.first[:title]
+        if text
+          m = RatingRegex.match(text)
+          if m and m[1]
+            return m[1].to_f
+          end
+        end
+      end
+
+      return nil
     end
 
     def reviews
-      text = agent.page.search("//div[@id='acr']//div[contains(@class, 'acrCount')]").text
-      m = ReviewsRegex.match(text)
-      m[1].to_i
+      reviews_element = agent.page.search("//div[@id='summaryStars']/a")
+      if reviews_element
+        text = reviews_element.text.gsub(/[^\d]/, "")
+
+        return text.to_i unless text.empty?
+      end
+      return nil
     end
 
 
