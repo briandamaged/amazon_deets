@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.description = "Scrapes product details from an Amazon product page"
   s.authors     = ["Brian Lauber"]
   s.email       = 'constructible.truth@gmail.com'
+  s.homepage    = 'https://github.com/briandamaged/amazon_deets'
   s.files       = Dir["lib/**/*.rb"]
   s.license     = "MIT"
 
